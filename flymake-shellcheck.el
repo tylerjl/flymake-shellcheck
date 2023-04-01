@@ -114,7 +114,9 @@ Check for problems, then call REPORT-FN with results."
                                proc))
               (kill-buffer (process-buffer proc)))))))
       (unless flymake-shellcheck-use-file
-        (process-send-region flymake-shellcheck--proc (point-min) (point-max))
+	(if (and polymode-mode pm/polymode)
+	    (process-send-string flymake-shellcheck--proc (pm--lsp-text))
+	  (process-send-region flymake-shellcheck--proc (point-min) (point-max)))
         (process-send-eof flymake-shellcheck--proc)))))
 
 ;;;###autoload
